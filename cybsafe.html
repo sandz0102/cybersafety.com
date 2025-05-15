@@ -1,0 +1,583 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Safety Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        body { 
+            font-family: 'Helvetica Neue', Arial, sans-serif; 
+            line-height: 1.6; 
+            color: black; 
+            position: relative; 
+            overflow-x: hidden; 
+            min-height: 100vh;
+            perspective: 1000px;
+        }
+        #particles-js { 
+            position: fixed; 
+            width: 100%; 
+            height: 100%; 
+            top: 0; 
+            left: 0; 
+            z-index: -1; 
+            background: linear-gradient(135deg, #4f46e5 0%, #312e81 100%); 
+        }
+        .cyber-grid { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), 
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px); 
+            background-size: 40px 40px; 
+            z-index: -1; 
+            opacity: 0.3; 
+        }
+        .main-content {
+            transform-style: preserve-3d;
+        }
+        .header-3d { 
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .header-3d h1 { 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); 
+            transform: translateZ(20px);
+            transition: transform 0.5s ease;
+        }
+        .header-3d:hover h1 {
+            transform: translateZ(30px) rotateY(10deg);
+        }
+        .floating { 
+            animation: floating 6s ease-in-out infinite; 
+        }
+        @keyframes floating { 
+            0% { transform: translateY(0) rotate(0); } 
+            50% { transform: translateY(-10px) rotate(2deg); } 
+            100% { transform: translateY(0) rotate(0); } 
+        }
+        .pulse { 
+            animation: pulse 2s infinite; 
+        }
+        @keyframes pulse { 
+            0% { transform: scale(1); } 
+            50% { transform: scale(1.05); } 
+            100% { transform: scale(1); } 
+        }
+        .glow { 
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); 
+        }
+        .btn-3d { 
+            position: relative; 
+            transition: all 0.3s ease; 
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 0 0 #312e81, 0 5px 10px rgba(0, 0, 0, 0.2); 
+        }
+        .btn-3d:hover { 
+            transform: translateY(-2px) rotateX(5deg); 
+            box-shadow: 0 6px 0 0 #312e81, 0 8px 15px rgba(0, 0, 0, 0.2); 
+        }
+        .btn-3d:active { 
+            transform: translateY(2px) rotateX(-2deg); 
+            box-shadow: 0 2px 0 0 #312e81, 0 3px 5px rgba(0, 0, 0, 0.2); 
+        }
+        .floating-element { 
+            position: absolute; 
+            background: rgba(59, 130, 246, 0.1); 
+            border: 2px solid rgba(59, 130, 246, 0.3); 
+            border-radius: 50%; 
+            pointer-events: none; 
+            z-index: 1; 
+            animation: float 15s infinite ease-in-out; 
+        }
+        @keyframes float { 
+            0%, 100% { transform: translate(0) rotate(0); } 
+            25% { transform: translate(10px, 10px) rotate(5deg); } 
+            50% { transform: translate(-10px, 5px) rotate(-5deg); } 
+            75% { transform: translate(5px, -10px) rotate(5deg); } 
+        }
+        .info-card {
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            position: relative;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .info-card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(2deg);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: -1;
+        }
+        .info-card:hover::before {
+            opacity: 1;
+        }
+        .card-icon {
+            transition: all 0.5s ease;
+            transform: translateZ(20px);
+        }
+        .info-card:hover .card-icon {
+            transform: translateZ(40px) rotateY(15deg);
+        }
+        .section-title {
+            transform-style: preserve-3d;
+            display: inline-block;
+        }
+        .section-title h2 {
+            transition: transform 0.5s ease;
+            transform: translateZ(10px);
+        }
+        .section-title:hover h2 {
+            transform: translateZ(30px) rotateX(5deg);
+        }
+        .hero-image {
+            transform-style: preserve-3d;
+            animation: float 8s ease-in-out infinite;
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            transition: all 0.5s ease;
+        }
+        .hero-image:hover {
+            transform: perspective(1000px) rotateX(10deg) rotateY(10deg) translateY(-10px);
+        }
+        .threat-card {
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+        .threat-card:hover {
+            transform: rotateY(10deg) translateY(-5px);
+        }
+        .threat-icon {
+            transition: all 0.5s ease;
+            transform: translateZ(10px);
+        }
+        .threat-card:hover .threat-icon {
+            transform: translateZ(30px) rotateY(15deg);
+        }
+        .contact-form {
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+        }
+        .contact-form:hover {
+            transform: rotateX(5deg) translateY(-5px);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="particles-js"></div>
+    <div class="cyber-grid"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="main-content">
+        <header class="bg-indigo-800 text-white py-4 px-6 sticky top-0 z-10 header-3d">
+            <div class="max-w-6xl mx-auto flex md:flex-row justify-between items-center">
+                <div class="flex items-center">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3063/3063176.png" alt="Shield Icon" 
+                         class="h-10 w-10 mr-3 transition-all duration-500 hover:rotate-12 hover:scale-110">
+                    <h1 class="text-2xl font-bold mb-4 md:mb-0 glow">Cyber Safety Hub</h1>
+                </div>
+                <nav class="flex flex-wrap justify-center gap-4 md:gap-6">
+                    <a href="#tips" class="px-3 py-1 rounded-lg hover:bg-indigo-700 transition-all transform hover:-translate-y-1">Quick Tips</a>
+                    <a href="#passwords" class="px-3 py-1 rounded-lg hover:bg-indigo-700 transition-all transform hover:-translate-y-1">Password Help</a>
+                    <a href="#threats" class="px-3 py-1 rounded-lg hover:bg-indigo-700 transition-all transform hover:-translate-y-1">Online Dangers</a>
+                    <a href="#quiz" class="px-3 py-1 rounded-lg hover:bg-indigo-700 transition-all transform hover:-translate-y-1">Safety Quiz</a>
+                    <a href="#contact" class="px-3 py-1 rounded-lg hover:bg-indigo-700 transition-all transform hover:-translate-y-1">Questions?</a>
+                </nav>
+            </div>
+        </header>
+        <section class="bg-indigo-700 text-white py-16 relative overflow-hidden">
+            <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4 floating">Staying safe online doesn't have to be complicated</h2>
+                    <p class="text-xl pulse">Simple, practical advice for protecting your digital life</p>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="https://img.freepik.com/free-vector/cyber-security-concept-illustration_114360-2004.jpg" 
+                         alt="Cyber Security Illustration" 
+                         class="hero-image w-full max-w-md">
+                </div>
+            </div>
+        </section>
+        <main class="max-w-6xl mx-auto px-4 py-8">
+            <section id="tips" class="py-12">
+                <div class="section-title text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2 pb-2 border-b-2 border-indigo-200 inline-block">Easy Security Habits</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="info-card p-8 rounded-xl">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064155.png" 
+                             alt="Password Icon" 
+                             class="card-icon h-16 w-16 mx-auto mb-6">
+                        <h3 class="text-xl font-semibold mb-4 text-center">Better Passwords</h3>
+                        <p class="text-gray-700">Think of passwords like toothbrushes - don't share them and change them regularly. Mix uppercase, lowercase, numbers and symbols.</p>
+                    </div>
+                    <div class="info-card p-8 rounded-xl">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" 
+                             alt="Two Factor Auth Icon" 
+                             class="card-icon h-16 w-16 mx-auto mb-6">
+                        <h3 class="text-xl font-semibold mb-4 text-center">Two-Step Verification</h3>
+                        <p class="text-gray-700">It's like a second lock. Even if someone gets your password, they can't get in without your phone.</p>
+                    </div>
+                    <div class="info-card p-8 rounded-xl">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4711/4711980.png" 
+                             alt="Suspicious Link Icon" 
+                             class="card-icon h-16 w-16 mx-auto mb-6">
+                        <h3 class="text-xl font-semibold mb-4 text-center">Suspicious Links</h3>
+                        <p class="text-gray-700">If a link looks fishy, it probably is. Hover to see where they go before clicking.</p>
+                    </div>
+                </div>
+            </section>
+            <section id="passwords" class="py-12 bg-gray-100 rounded-3xl px-6">
+                <div class="section-title text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">Password Managers: Your Digital Safe</h2>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex flex-col md:flex-row gap-8 mb-12 items-center">
+                       
+                        <div class="md:w-1/2 info-card p-8 rounded-xl">
+                            <h3 class="text-xl font-semibold mb-6 flex items-center">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2889/2889676.png" 
+                                     alt="Lock Icon" 
+                                     class="h-8 w-8 mr-3">
+                                Why bother?
+                            </h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" 
+                                         alt="Check Mark" 
+                                         class="h-5 w-5 mr-2 mt-1">
+                                    <span>Remembers all passwords</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" 
+                                         alt="Check Mark" 
+                                         class="h-5 w-5 mr-2 mt-1">
+                                    <span>Creates strong passwords</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png" 
+                                         alt="Check Mark" 
+                                         class="h-5 w-5 mr-2 mt-1">
+                                    <span>Warns about weak/reused passwords</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 mb-12">
+                        <div class="info-card p-8 rounded-xl">
+                            <img src="https://cdn-icons-png.flaticon.com/512/1570/1570887.png" 
+                                 alt="How It Works" 
+                                 class="card-icon h-16 w-16 mx-auto mb-6">
+                            <h3 class="text-xl font-semibold mb-4 text-center">How They Work</h3>
+                            <p class="mb-4">Imagine a super secure notebook with one key (master password). All others are inside.</p>
+                            <p>Automatically fills passwords. No more sticky notes!</p>
+                        </div>
+                        <div class="info-card p-8 rounded-xl">
+                            <img src="https://cdn-icons-png.flaticon.com/512/2997/2997121.png" 
+                                 alt="Getting Started" 
+                                 class="card-icon h-16 w-16 mx-auto mb-6">
+                            <h3 class="text-xl font-semibold mb-4 text-center">Getting Started</h3>
+                            <ol class="space-y-3 pl-4 list-decimal">
+                                <li>Pick a manager (free options exist)</li>
+                                <li>Create one strong master password</li>
+                                <li>Let it generate and store passwords</li>
+                                <li>Install browser extension and phone app</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="info-card p-8 rounded-xl">
+                        <h3 class="text-xl font-semibold mb-6 text-center">Choosing What's Right</h3>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="text-center threat-card p-4 rounded-lg">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2933/2933245.png" 
+                                     alt="Cloud Icon" 
+                                     class="threat-icon h-12 w-12 mx-auto mb-3">
+                                <h4 class="font-medium text-indigo-600">Cloud-based</h4>
+                                <p class="text-sm">Multiple devices</p>
+                            </div>
+                            <div class="text-center threat-card p-4 rounded-lg">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2965/2965300.png" 
+                                     alt="Device Icon" 
+                                     class="threat-icon h-12 w-12 mx-auto mb-3">
+                                <h4 class="font-medium text-indigo-600">Device-only</h4>
+                                <p class="text-sm">More private</p>
+                            </div>
+                            <div class="text-center threat-card p-4 rounded-lg">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2997/2997121.png" 
+                                     alt="Browser Icon" 
+                                     class="threat-icon h-12 w-12 mx-auto mb-3">
+                                <h4 class="font-medium text-indigo-600">Browser built-in</h4>
+                                <p class="text-sm">Simple</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="threats" class="py-12">
+                <div class="section-title text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2 pb-2 border-b-2 border-indigo-200 inline-block">Common Online Threats</h2>
+                </div>
+                <div class="max-w-3xl mx-auto">
+                    <div class="threat-card info-card p-8 rounded-xl mb-8">
+                        <div class="flex flex-col md:flex-row items-center gap-6">
+                            <div class="md:w-1/3">
+                                <img src="https://img.freepik.com/free-vector/phishing-concept-illustration_114360-7262.jpg" 
+                                     alt="Phishing" 
+                                     class="threat-icon w-full rounded-lg">
+                            </div>
+                            <div class="md:w-2/3">
+                                <h3 class="font-semibold text-xl text-red-600 mb-3">Phishing Scams</h3>
+                                <p class="text-gray-700">Fake emails/texts tricking you for passwords. Always verify sender addresses and never click suspicious links.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="threat-card info-card p-8 rounded-xl mb-8">
+                        <div class="flex flex-col md:flex-row items-center gap-6">
+                            <div class="md:w-1/3">
+                                <img src="https://img.freepik.com/free-vector/computer-virus-concept-illustration_114360-7384.jpg" 
+                                     alt="Malware" 
+                                     class="threat-icon w-full rounded-lg">
+                            </div>
+                            <div class="md:w-2/3">
+                                <h3 class="font-semibold text-xl text-red-600 mb-3">Malware</h3>
+                                <p class="text-gray-700">Bad software stealing info or damaging devices. Only download from trusted sources and keep antivirus updated.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="threat-card info-card p-8 rounded-xl">
+                        <div class="flex flex-col md:flex-row items-center gap-6">
+                            <div class="md:w-1/3">
+                                <img src="https://img.freepik.com/free-vector/public-wifi-concept-illustration_114360-7298.jpg" 
+                                     alt="Public Wi-Fi" 
+                                     class="threat-icon w-full rounded-lg">
+                            </div>
+                            <div class="md:w-2/3">
+                                <h3 class="font-semibold text-xl text-red-600 mb-3">Public Wi-Fi Risks</h3>
+                                <p class="text-gray-700">Unprotected use can be overheard. Use VPNs for sensitive activities on public networks.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="quiz" class="py-12 bg-gray-100 rounded-3xl px-6">
+                <div class="section-title text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">Quick Safety Quiz</h2>
+                </div>
+                <div class="max-w-xl mx-auto">
+                    <div class="info-card p-8 rounded-xl mb-8">
+                        <img src="https://cdn-icons-png.flaticon.com/512/4100/4100583.png" 
+                             alt="Quiz Question" 
+                             class="card-icon h-16 w-16 mx-auto mb-6">
+                        <p class="mb-6 font-medium text-lg">1. Email says account closed unless you login via link. What to do?</p>
+                        <div class="flex flex-wrap gap-4 justify-center">
+                            <button onclick="showAnswer(0, true)" class="btn-3d bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
+                                Don't click - scam
+                            </button>
+                            <button onclick="showAnswer(0, false)" class="btn-3d bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
+                                Click & login
+                            </button>
+                        </div>
+                        <p id="quiz-result-0" class="mt-4 font-medium text-center hidden"></p>
+                    </div>
+                    <div class="info-card p-8 rounded-xl">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064155.png" 
+                             alt="Password Quiz" 
+                             class="card-icon h-16 w-16 mx-auto mb-6">
+                        <p class="mb-6 font-medium text-lg">2. Which password is more secure?</p>
+                        <div class="flex flex-wrap gap-4 justify-center">
+                            <button onclick="showAnswer(1, true)" class="btn-3d bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
+                                Tr0ub4dor&3
+                            </button>
+                            <button onclick="showAnswer(1, false)" class="btn-3d bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
+                                password123
+                            </button>
+                        </div>
+                        <p id="quiz-result-1" class="mt-4 font-medium text-center hidden"></p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <section id="contact" class="py-12 bg-indigo-700 text-white">
+            <div class="max-w-4xl mx-auto px-4">
+                <div class="contact-form bg-indigo-600 p-8 rounded-2xl">
+                    <div class="section-title text-center mb-12">
+                        <h2 class="text-2xl md:text-3xl font-bold mb-2">Got Questions?</h2>
+                        <p class="text-indigo-200">We're here to help with your cyber security concerns</p>
+                    </div>
+                    <form class="space-y-6 max-w-md mx-auto">
+                        <div>
+                            <label for="name" class="block mb-2">Your Name</label>
+                            <input type="text" id="name" class="w-full p-4 rounded-lg bg-indigo-500 text-white placeholder-indigo-300 focus:ring-2 focus:ring-white">
+                        </div>
+                        <div>
+                            <label for="email" class="block mb-2">Email</label>
+                            <input type="email" id="email" class="w-full p-4 rounded-lg bg-indigo-500 text-white placeholder-indigo-300 focus:ring-2 focus:ring-white">
+                        </div>
+                        <div>
+                            <label for="message" class="block mb-2">Your Message</label>
+                            <textarea id="message" rows="5" class="w-full p-4 rounded-lg bg-indigo-500 text-white placeholder-indigo-300 focus:ring-2 focus:ring-white"></textarea>
+                        </div>
+                        <button type="submit" class="btn-3d bg-white text-indigo-800 font-bold py-4 px-8 rounded-lg w-full hover:bg-gray-100 transform hover:-translate-y-1">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <footer class="bg-gray-800 text-white py-12">
+            <div class="max-w-6xl mx-auto px-4 text-center">
+                <div class="flex justify-center mb-6">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3063/3063176.png" 
+                         alt="Shield Icon" 
+                         class="h-16 w-16 animate-bounce">
+                </div>
+                <p class="text-xl font-bold mb-2">Cyber Safety Hub</p>
+                <p class="text-gray-400 mb-6">Your trusted resource for online safety</p>
+                <div class="flex justify-center space-x-6 mb-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" class="h-6 w-6">
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter" class="h-6 w-6">
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384015.png" alt="LinkedIn" class="h-6 w-6">
+                    </a>
+                </div>
+                <p class="text-sm text-gray-500">
+                    © 2023 Cyber Safety Hub. All rights reserved.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize particles.js
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#ffffff" },
+                    "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 } },
+                    "opacity": { "value": 0.5, "random": false, "anim": { "enable": false, "speed": 1, "opacity_min": 0.1, "sync": false } },
+                    "size": { "value": 3, "random": true, "anim": { "enable": false, "speed": 40, "size_min": 0.1, "sync": false } },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.4, "width": 1 },
+                    "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false, "attract": { "enable": false, "rotateX": 600, "rotateY": 1200 } }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": { "enable": true, "mode": "grab" },
+                        "onclick": { "enable": true, "mode": "push" },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": { "distance": 140, "line_linked": { "opacity": 1 } },
+                        "bubble": { "distance": 400, "size": 40, "duration": 2, "opacity": 8, "speed": 3 },
+                        "repulse": { "distance": 200, "duration": 0.4 },
+                        "push": { "particles_nb": 4 },
+                        "remove": { "particles_nb": 2 }
+                    }
+                },
+                "retina_detect": true
+            });
+
+            // Add mouse move effects for floating elements
+            document.addEventListener('mousemove', (e) => {
+                const floatingElements = document.querySelectorAll('.floating-element');
+                floatingElements.forEach((el, index) => {
+                    const speed = 0.02 + (index * 0.01);
+                    const x = (window.innerWidth - e.pageX) * speed;
+                    const y = (window.innerHeight - e.pageY) * speed;
+                    el.style.transform = `translate(${x}px, ${y}px) rotate(${x}deg)`;
+                });
+
+                // Add subtle 3D tilt effect to the hero image based on mouse position
+                const heroImage = document.querySelector('.hero-image');
+                if (heroImage) {
+                    const centerX = window.innerWidth / 2;
+                    const centerY = window.innerHeight / 2;
+                    const posX = e.clientX - centerX;
+                    const posY = e.clientY - centerY;
+                    heroImage.style.transform = `perspective(1000px) rotateX(${posY / 50}deg) rotateY(${-posX / 50}deg) translateY(-10px)`;
+                }
+            });
+
+            // Add scroll animations
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.info-card, .section-title, .threat-card');
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.3;
+                    
+                    if (elementPosition < screenPosition) {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            };
+
+            // Set initial styles for animation
+            document.querySelectorAll('.info-card, .section-title, .threat-card').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'all 0.6s ease-out';
+            });
+
+            // Run once on load
+            animateOnScroll();
+            
+            // Then on scroll
+            window.addEventListener('scroll', animateOnScroll);
+        });
+
+        function showAnswer(questionNum, isCorrect) {
+            const resultElement = document.getElementById(`quiz-result-${questionNum}`);
+            
+            if (questionNum === 0) {
+                if (isCorrect) {
+                    resultElement.textContent = "✅ Good call! Never trust unexpected login requests.";
+                    resultElement.className = "mt-4 font-medium text-center text-green-600";
+                } else {
+                    resultElement.textContent = "❌ That's how scams work! Always go directly to the website instead of clicking links in emails.";
+                    resultElement.className = "mt-4 font-medium text-center text-red-600";
+                }
+            } else {
+                if (isCorrect) {
+                    resultElement.textContent = "✅ Yes! Even though it's harder to remember, it's much harder to hack.";
+                    resultElement.className = "mt-4 font-medium text-center text-green-600";
+                } else {
+                    resultElement.textContent = "❌ Too easy to guess! Try mixing letters, numbers and symbols.";
+                    resultElement.className = "mt-4 font-medium text-center text-red-600";
+                }
+            }
+            
+            resultElement.classList.remove('hidden');
+            
+            // Add animation
+            resultElement.style.animation = 'none';
+            setTimeout(() => {
+                resultElement.style.animation = 'fadeIn 0.5s ease-out';
+            }, 10);
+        }
+    </script>
+</body>
+</html>
